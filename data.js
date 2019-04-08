@@ -8,8 +8,8 @@ const ActorSchema = new Schema(
     name: String,
     _a_name: String,
     actorType: String,
-    locationID: String,
-    articleIDs: Array
+    locationID: { type: Schema.Types.ObjectId, ref: 'Location' },
+    articleIDs: [{ type: Schema.Types.ObjectId, ref: 'Article' }]
   },
   {collection: 'actor'}
 );
@@ -19,11 +19,11 @@ const ArticleSchema = new Schema(
   {
     _id: Schema.Types.ObjectId,
 	url: String,
-	actorIDs: Array,
-	peopleIDs: Array,
-	orgIDs: Array,
-	locationIDs: Array,
-	keywords: Array
+	actorIDs: [{ type: Schema.Types.ObjectId, ref: 'Actor' }],
+	peopleIDs: [{ type: Schema.Types.ObjectId, ref: 'Actor' }],
+	orgIDs: [{ type: Schema.Types.ObjectId, ref: 'Actor' }],
+	locationIDs: [{ type: Schema.Types.ObjectId, ref: 'Location' }],
+	keywords: [{ type: String }]
   },
   {collection: 'article'}
 );

@@ -53,10 +53,15 @@ router.get("/articles", (req, res) => {
 
 router.get("/articles/:articleId", (req, res) => {
   const { articleId } = req.params;
-  Article.find({ _id: articleId }).exec((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
+  Article.findOne({ _id: articleId })
+    .populate('actorIDs')
+    .populate('peopleIDs')
+    .populate('orgIDs')
+    .populate('locationIDs')
+    .exec((err, data) => {
+      if (err) return res.json({ success: false, error: err });
+      return res.json({ success: true, data: data });
+    });
 });
 
 router.get("/locations", (req, res) => {
