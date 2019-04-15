@@ -9,9 +9,24 @@ const ActorSchema = new Schema(
     _a_name: String,
     actorType: String,
     locationID: { type: Schema.Types.ObjectId, ref: 'Location' },
-    articleIDs: [{ type: Schema.Types.ObjectId, ref: 'Article' }]
+    articleIDs: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
+    connections: { 
+      type: Map, 
+      of: { type: Schema.Types.ObjectId, ref: 'ActorConnection'}
+    }
   },
-  {collection: 'actor'}
+  { collection: 'actor' }
+);
+
+const ActorConnectionSchema = new Schema(
+  {
+    _id: Schema.Types.ObjectId,
+    actorIDs: [{ type: Schema.Types.ObjectId, ref: 'Actor' }],
+    strength: Number,
+    articleIDs: { type: Schema.Types.ObjectId, ref: 'Article' },
+    sentiment: String
+  },
+  { collection: 'actor_connection' }
 );
 
 // this will be our data base's data structure 
@@ -36,12 +51,13 @@ const LocationSchema = new Schema(
 	longitude: Number,
 	type: String
   },
-  {collection: 'location'}
+  { collection: 'location' }
 );
 
 // export the new Schema so we could modify it using Node.js
 module.exports = {
 	'Actor': mongoose.model("Actor", ActorSchema),
+  'ActorConnection': mongoose.model("ActorConnection", ActorConnectionSchema),
 	'Article': mongoose.model("Article", ArticleSchema),
 	'Location': mongoose.model("Location", LocationSchema)
 }

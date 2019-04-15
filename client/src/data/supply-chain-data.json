@@ -1,0 +1,88 @@
+{
+  "assets": [
+    {
+      "assetName": "Vegetables",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Nairobi",
+          "coordinates":[
+            { "latitude": -1.28333, "longitude": 36.81667 }
+          ]
+        }
+      ],
+      "value": 1000000,
+      "description": "Norm Corp sources $1000000 of vegetabels each year from Nairobi."
+    },
+    {
+      "assetName": "Peas",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Guatamala City",
+          "coordinates":[
+            { "latitude": 14.628434, "longitude": -90.522713 }
+          ]
+        }
+      ],
+      "value": 500000,
+      "description": "Norm Corp sources $500000 of apparel each year from the Peas from Guatamala."
+    },
+    {
+      "assetName": "Rice and Seafood",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Thailand",
+          "coordinates":[
+            { "latitude": 13.736717, "longitude": 100.524186 }
+          ]
+        }
+      ],
+      "value": 2000000,
+      "description": "Norm Corp sources $2000000 of rice and seafood each year from Bangkok."
+    },
+    {
+      "assetName": "Hot Sauce",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Ho Chi Minh",
+          "coordinates":[
+            { "latitude": 10.762622, "longitude": 106.660172 }
+          ]
+        }
+      ],
+      "value": 1000000,
+      "description": "Norm Corp sources hot sauce from Ho Chi Minh."
+    },
+    {
+      "assetName": "Sweets",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Samsun",
+          "coordinates":[
+            { "latitude": 41.28667, "longitude": 36.33 }
+          ]
+        }
+      ],
+      "value": 1000000,
+      "description": "Norm Corp sources sweets from Samsun."
+    },
+    {
+      "assetName": "Sauces",
+      "isCompanyOwned": false,
+      "location": [
+        {
+          "locationName": "Senai",
+          "coordinates":[
+            { "latitude": -15.787996858, "longitude": -47.873663172 }
+          ]
+        }
+      ],
+      "value": 1000000,
+      "description": "Norm Corp sources sauces from Senai."
+    }
+  ]
+}

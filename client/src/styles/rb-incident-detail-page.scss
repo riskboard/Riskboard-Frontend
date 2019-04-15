@@ -1,0 +1,53 @@
+.rb-incident-section {
+	height: 40em;
+	background: #CDCDCD;
+}
+
+.rb-incident-text {
+	text-align: left;
+	font-size: 1.4em;
+}
+
+.rb-incident-information {
+	margin-bottom: 2em;
+}
+
+.rb-red-box {
+	color: #FFF;
+	background: #D20E25;
+	padding: 0.25em;
+	font-size: 2em;
+}
+
+.rb-risk-box {
+	background: #F6FAFC;
+	padding: 1em;
+	p {
+		text-align: left;
+		font-size: 1.2em;
+	}
+}
+
+ul.rb-related-stories {
+	text-align: left;
+	font-size: 1.2em;
+	li {
+		margin-bottom: 0.5em;
+	}
+}
+
+.rb-index-wrapper {
+	border-right: 1px solid #DDD;
+	padding: 0 1em;
+	&:last-child {
+		border-right: none;
+	}
+}
+.rb-index-value {
+	font-size: 2em;
+	margin-bottom: 0.25em;
+}
+
+.rb-index-name {
+	font-size: 1.2em;
+}

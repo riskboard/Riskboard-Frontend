@@ -2,13 +2,15 @@
   "name": "riskboard-frontend",
   "version": "1.0.0",
   "description": "Frontend Server for Riskboard",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/server.js"
   },
   "author": "opleban",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",

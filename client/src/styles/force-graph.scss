@@ -1,0 +1,18 @@
+.rb-actor-list {
+	max-height: 20em;
+	overflow: scroll;
+	&::after {
+		content: "";
+  		clear: both;
+  		display: table;
+	}
+	ul {
+		text-align: left;
+		li {
+			font-size: 1.4em;
+			display: inline-block;
+			margin-left: 1em;
+			margin-bottom: 0.5em;
+		}
+	}
+}
