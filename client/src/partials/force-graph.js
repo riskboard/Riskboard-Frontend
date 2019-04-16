@@ -1,34 +1,9 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import { InteractiveForceGraph,
-         ForceGraphNode,
-         ForceGraphLink } from 'react-vis-force';
-import ForceGraph2D from 'react-force-graph-2d';
+import RBForceGraph from '../components/rb-force-graph.js';
 import queryString from 'query-string'
 
 import '../styles/force-graph.scss';
-// const tenChildren = [
-//   <ForceGraphNode node={{ id: 'first-node', radius: 5 }} fill="#11939A" />,
-//   <ForceGraphNode node={{ id: 'second-node', radius: 10 }} fill="#47d3d9" />,
-//   <ForceGraphNode node={{ id: 'third-node', radius: 15 }} fill="#11939A" />,
-//   <ForceGraphNode node={{ id: 'fourth-node', radius: 15 }} fill="#47d3d9" />,
-//   <ForceGraphNode node={{ id: 'fifth-node', radius: 5 }} fill="#11939A" />,
-//   <ForceGraphNode node={{ id: 'sixth-node', radius: 15 }} fill="#47d3d9" />,
-//   <ForceGraphNode node={{ id: 'seventh-node', radius: 10 }} fill="#11939A" />,
-//   <ForceGraphNode node={{ id: 'eighth-node', radius: 5 }} fill="#47d3d9" />,
-//   <ForceGraphNode node={{ id: 'ninth-node', radius: 5 }} fill="#11939A" />,
-//   <ForceGraphNode node={{ id: 'tenth-node', radius: 5 }} fill="#47d3d9" />,
-//   <ForceGraphLink link={{ source: 'first-node', target: 'second-node' }} />,
-//   <ForceGraphLink link={{ source: 'third-node', target: 'second-node' }} />,
-//   <ForceGraphLink link={{ source: 'third-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'fifth-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'fifth-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'sixth-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'seventh-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'eighth-node', target: 'fourth-node' }} />,
-//   <ForceGraphLink link={{ source: 'ninth-node', target: 'tenth-node' }} />,
-//   <ForceGraphLink link={{ source: 'tenth-node', target: 'fifth-node' }} />,
-// ];
 
 const forceGraphConfig = {
   person: {
@@ -45,7 +20,7 @@ class ForceGraph extends Component {
     this.state = {
       actors: [],
       actorCount: 0,
-      selectActor: null,
+      selectedActor: null,
       selectedActorDetail: null,
       selectedActorConnections: []
     };
@@ -77,77 +52,10 @@ class ForceGraph extends Component {
       })
   }
 
-  generateForceGraph(state=this.state) {
-    const { actors, 
-            selectedActor, 
-            selectedActorConnections, 
-            selectedActorDetail } = this.state;
-
-    let actorNodes = [];
-    let actorLinks = [];        
-
-    if (selectedActor) {
-      actorNodes.push(
-        { 
-          id: `${selectedActorDetail.name}`,
-          name: selectedActorDetail.name, 
-          group: 1
-        }
-      );
-      for (let i = 0; i < selectedActorConnections.length; i++) {
-        const { name } = selectedActorConnections[i];
-        actorNodes.push({ 
-          id: `${name}-${i}`,
-          name: name, 
-          group: 2
-        })
-        actorLinks.push({
-          source: selectedActorDetail.name, 
-          target: `${name}-${i}`, 
-          value: 1
-        })
-      }
-    } else {
-      actorNodes = actors.map((actor, i) => {
-        return { 
-          id: `${actor.name}-${i}`,
-          name: actor.name, 
-          group: 1
-        }
-      });
-    }
-
-
-      return {
-        nodes: actorNodes || [{ id: 0 }],
-        links: actorLinks
-      }
+  onNodeClick = (e, actorId) => {
+    e.preventDefault();
+    fetch(`http://localhost:3001/api/actors/${actorId}`)
   }
-
-  // generateForceGraph(state = this.state) {
-  //   const { actors, 
-  //           selectedActor, 
-  //           selectedActorDetail, 
-  //           selectedActorConnections } = this.state;
-
-  //   if (selectedActor) {
-  //     console.log(selectedActorConnections);
-  //     console.log(selectedActorDetail);
-  //     const nodeArray = [<ForceGraphNode key={`${selectedActorDetail.name}`} node={{ id: `${selectedActorDetail.name}`, radius: 7 }} fill="#47d3d9" />];
-  //     for (let i = 0; i < selectedActorConnections.length; i++) {
-  //       const { name } = selectedActorConnections[i];
-  //       nodeArray.push(<ForceGraphNode key={`${name}-${i}`} node={{ id: `${name}-${i}`, radius: 7 }} fill="#47d3d9" />)
-  //       nodeArray.push(<ForceGraphLink key={`${name}-${i}`} strokeWidth={1} link={{ source: selectedActorDetail.name, target:`${name}-${i}` }} />,)
-  //     }
-  //     return nodeArray;
-  //   }
-
-  //   return actors.map((actor, i) => {
-  //     const { name, actorType } = actor;
-  //     const { nodeColor } = forceGraphConfig[actorType].color 
-  //     return (<ForceGraphNode key={`${name}-${i}`} node={{ id: `${name}-${i}`, radius: 7 }} fill={nodeColor} />);
-  //   });
-  // }
 
   generateActorsList(state = this.state) {
     const { actors } = this.state;
@@ -157,13 +65,36 @@ class ForceGraph extends Component {
       return (<li onClick={(e) => this.onActorClick(e, _id)} key={`${name}-${i}`}>{name} ({actorType})</li>);
     });
   }
-  componentDidUpdate() {
-    this.fg.zoom(0.5);
+
+  generateArticleList(state=this.state) {
+    const {selectedActorDetail} = this.state;
+    const selectedActorName = selectedActorDetail ? selectedActorDetail.name : "No Actor Selected";
+    const selectedActorArticles = selectedActorDetail ? selectedActorDetail.articleIDs : [];
+    return (
+      <div className="rb-force-graph-article-list">
+        <h2 className="rb-section-title">Actor Incidents: {selectedActorName}</h2>
+        <ul>
+          {
+            selectedActorArticles.map((article, i) => {
+              return (
+                <li key={i} className="rb-force-graph-article">
+                  <a target="_blank" href={article.url}>{article.url}</a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    );
   }
 
   render() {
-    const {actorCount} = this.state;
-    console.log(this.generateForceGraph());
+    const { actorCount, 
+            actors,
+            selectedActor, 
+            selectedActorDetail, 
+            selectedActorConnections} = this.state;
+
     return (
       <div className="rb-force-graph-page rb-page">
         <h1 className="rb-page-title">Story Explorer</h1>
@@ -172,53 +103,27 @@ class ForceGraph extends Component {
           <ul>{this.generateActorsList()}</ul>
         </div>
         <Grid fluid>
-          <ForceGraph2D 
-            ref={el => { this.fg = el; }}
-            graphData={this.generateForceGraph()}
-            width={985}
-            nodeAutoColorBy="group"
-            nodeCanvasObject={(node, ctx, globalScale) => {
-              const label = node.name;
-              const fontSize = 14/globalScale;
-              ctx.font = `${fontSize}px Sans-Serif`;
-              const textWidth = ctx.measureText(label).width;
-              const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-              ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillStyle = 'black';
-              ctx.fillText(label, node.x, node.y);
-            }} 
-          />
+          <Row>
+            <Col lg={8}>
+              <div className="rb-section">
+                <RBForceGraph 
+                  actors={actors}
+                  onActorClick={this.onActorClick}
+                  selectedActor={selectedActor}
+                  selectedActorDetail={selectedActorDetail}
+                  selectedActorConnections={selectedActorConnections}
+                />
+              </div>
+            </Col>
+            <Col lg={4} className="rb-force-graph-article-list-column">
+              {this.generateArticleList()}
+            </Col>
+          </Row>
         </Grid>
-      </div>
-    );
-  }
-
-
-  // render() {
-  //   const {actorCount} = this.state;
-  //   return (
-  //     <div className="rb-force-graph-page rb-page">
-  //       <h1 className="rb-page-title">Story Explorer</h1>
-  //       <div className="rb-actor-list">
-  //         <h2> Number of Actors: {actorCount}</h2>
-  //         <ul>{this.generateActorsList()}</ul>
-  //       </div>
-  //       <Grid fluid>
-  //         <InteractiveForceGraph simulationOptions={{ animate: true, alpha: 1 }}>
-  //           {this.generateForceGraph()}
-  //         </InteractiveForceGraph>
-  //       </Grid>
-  //     </div>
-  //   );
-  // }
+    </div>
+  );
 }
 
-ForceGraph.defaultProps = {
-  assets: [],
-  stories: []
-};
+}
 
 export default ForceGraph;

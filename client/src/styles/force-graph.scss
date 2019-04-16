@@ -1,3 +1,8 @@
+.rb-force-graph-article-list-column {
+	border: 1px solid black;
+	border-radius: 10px;
+}
+
 .rb-actor-list {
 	max-height: 20em;
 	overflow: scroll;
@@ -15,4 +20,8 @@
 			margin-bottom: 0.5em;
 		}
 	}
+}
+
+.rb-force-graph-article {
+	font-size: 1.4em;
 }
