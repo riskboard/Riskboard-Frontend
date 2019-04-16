@@ -42,9 +42,11 @@ app.use(logger("dev"));
 // this is our get method
 // this method fetches all available data in our database
 router.get("/actors", (req, res) => {
+  const limit = req.query.limit ? +req.query.limit : 200;
+  console.log(limit);
   Actor.find()
     .populate('connections')
-    .limit(400)
+    .limit(limit)
     .exec()
     .then((actors) => {
       Actor.countDocuments().exec((err, actorCount) => {
